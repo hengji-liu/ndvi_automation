@@ -9,23 +9,25 @@ cfg = configparser.ConfigParser()
 cfg.read('config.cfg')
 # cfg.read(sys.argv[1])
 
-output_name = cfg.get('parameters', 'output_name')
+para = 'parameters'
+jpg_name = cfg.get(para, 'jpg_name')
+output_name = cfg.get(para, 'output_name')
 
-plot_x = cfg.getfloat('parameters', 'plot_x')
-plot_y = cfg.getfloat('parameters', 'plot_y')
-net_x = cfg.getfloat('parameters', 'net_x')
-net_y = cfg.getfloat('parameters', 'net_y')
+plot_x = cfg.getfloat(para, 'plot_x')
+plot_y = cfg.getfloat(para, 'plot_y')
+net_x = cfg.getfloat(para, 'net_x')
+net_y = cfg.getfloat(para, 'net_y')
 
-angle_deg = 360 - cfg.getfloat('parameters', 'angle_deg')
+angle_deg = 360 - cfg.getfloat(para, 'angle_deg')
 
-x_offset = cfg.getfloat('parameters', 'x_offset')
-y_offset = cfg.getfloat('parameters', 'y_offset')
+x_offset = cfg.getfloat(para, 'x_offset')
+y_offset = cfg.getfloat(para, 'y_offset')
 
-rownum = cfg.getint('parameters', 'rownum')
-rangenum = cfg.getint('parameters', 'rangenum')
+rownum = cfg.getint(para, 'rownum')
+rangenum = cfg.getint(para, 'rangenum')
 
-x = cfg.getint('parameters', 'x')
-y = cfg.getint('parameters', 'y')
+x = cfg.getint(para, 'x')
+y = cfg.getint(para, 'y')
 
 # transform matrix
 angle_rad = angle_deg / 180 * np.pi
@@ -33,7 +35,7 @@ cos = np.cos(angle_rad)
 sin = np.sin(angle_rad)
 matrix = np.array(((cos, -sin), (sin, cos)))
 
-redjpg = imread('red.jpg')
+redjpg = imread(jpg_name)
 # draw
 for i in range(rownum - 1, -1, -1):
     for j in range(rangenum):

@@ -15,6 +15,8 @@ rededge_name = cfg.get(para, 'rededge_name')
 nir_name = cfg.get(para, 'nir_name')
 green_name = cfg.get(para, 'green_name')
 
+jpg_name = cfg.get(para, 'jpg_name')
+
 record_name = cfg.get(para, 'record_name')
 output_name = cfg.get(para, 'output_name')
 
@@ -85,7 +87,7 @@ ccci_vals = tuple(map(lambda v: (v - mmin) / rrange, ndre_vals))
 print('indices calculated')
 
 # draw and record
-redjpg = imread('red.jpg')
+redjpg = imread(jpg_name)
 with open(record_name, 'w') as f:
     f.write('refid,row,range,ndvi,ccci\n')
     refid = 0

@@ -44,6 +44,16 @@ import sys, struct
 # t = struct.unpack('f' * band.XSize, scanline)
 # print(t)
 
-imsave('temp.tif', np.random.rand(3, 4, 301, 219))
-im = imread('temp.tif', key=0)
-print(im.shape)
+# imsave('temp.tif', np.random.rand(3, 4, 301, 219))
+# im = imread('temp.tif', key=0)
+# print(im.shape)
+
+
+# red = imread('red.tif')
+# red = red[..., 0]
+# print(red[900, 900])
+# print(red.shape)
+# imsave('template.jpg', red)
+
+# redjpg = imread('template.jpg')
+# print(redjpg.shape)
