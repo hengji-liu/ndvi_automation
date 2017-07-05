@@ -58,24 +58,25 @@ for i in range(rownum):
         _y1 = -(i * net_y + y_offset)
         _x2 = _x1 + plot_x
         _y2 = _y1 - plot_y
-        x1, y1 = matrix.dot(np.array((_x1, _y1)))
-        x2, y2 = matrix.dot(np.array((_x2, _y1)))
-        x3, y3 = matrix.dot(np.array((_x2, _y2)))
-        x4, y4 = matrix.dot(np.array((_x1, _y2)))
-        r = np.array(tuple(map(lambda v: y - np.ceil(v), [y1, y2, y3, y4])))
-        c = np.array(tuple(map(lambda v: x + np.ceil(v), [x1, x2, x3, x4])))
+        x1, y1 = matrix.dot((_x1, _y1))
+        x2, y2 = matrix.dot((_x2, _y1))
+        x3, y3 = matrix.dot((_x2, _y2))
+        x4, y4 = matrix.dot((_x1, _y2))
+        r = np.array(tuple(map(lambda v: y - np.ceil(v), (y1, y2, y3, y4))))
+        c = np.array(tuple(map(lambda v: x + np.ceil(v), (x1, x2, x3, x4))))
         rr, cc = polygon(r, c)
-        for rrr in rr:
-            for ccc in cc:
-                nir_val = nir[rrr][ccc][0].astype(float)
-                red_val = red[rrr][ccc][0].astype(float)
-                rededge_val = rededge[rrr][ccc][0].astype(float)
-                ndvi = (nir_val - red_val) / (nir_val + red_val)
-                ndvi_vals.append(ndvi)
-                ndre = (nir_val - rededge_val) / (nir_val + rededge_val)
-                ndre_vals.append(ndre)
+        for rrr, ccc in zip(rr, cc):
+            nir_val = nir[rrr, ccc][0].astype(float)
+            red_val = red[rrr, ccc][0].astype(float)
+            rededge_val = rededge[rrr, ccc][0].astype(float)
+            ndvi = (nir_val - red_val) / (nir_val + red_val)
+            ndvi_vals.append(ndvi)
+            ndre = (nir_val - rededge_val) / (nir_val + rededge_val)
+            ndre_vals.append(ndre)
 
-# RGB sum normalisation
+print(len(ndre_vals), 'pixels processed')
+
+# ccci
 mmax = max(ndre_vals)
 mmin = min(ndre_vals)
 rrange = mmax - mmin
@@ -83,8 +84,8 @@ ccci_vals = tuple(map(lambda v: (v - mmin) / rrange, ndre_vals))
 
 print('indices calculated')
 
-redjpg = imread('red.jpg')
 # draw and record
+redjpg = imread('red.jpg')
 with open(record_name, 'w') as f:
     f.write('refid,row,range,ndvi,ccci\n')
     refid = 0
@@ -94,18 +95,18 @@ with open(record_name, 'w') as f:
             _y1 = -(i * net_y + y_offset)
             _x2 = _x1 + plot_x
             _y2 = _y1 - plot_y
-            x1, y1 = matrix.dot(np.array((_x1, _y1)))
-            x2, y2 = matrix.dot(np.array((_x2, _y1)))
-            x3, y3 = matrix.dot(np.array((_x2, _y2)))
-            x4, y4 = matrix.dot(np.array((_x1, _y2)))
-            r = np.array(tuple(map(lambda v: y - np.ceil(v), [y1, y2, y3, y4])))
-            c = np.array(tuple(map(lambda v: x + np.ceil(v), [x1, x2, x3, x4])))
+            x1, y1 = matrix.dot((_x1, _y1))
+            x2, y2 = matrix.dot((_x2, _y1))
+            x3, y3 = matrix.dot((_x2, _y2))
+            x4, y4 = matrix.dot((_x1, _y2))
+            r = np.array(tuple(map(lambda v: y - np.ceil(v), (y1, y2, y3, y4))))
+            c = np.array(tuple(map(lambda v: x + np.ceil(v), (x1, x2, x3, x4))))
             rr, cc = polygon(r, c)
             ndvi_val = ndvi_vals[i * rangenum + j]
             ccci_val = ccci_vals[i * rangenum + j]
             # draw
-            colour = np.ceil((ndvi_val + 1) / 2 * 255)
-            redjpg[rr, cc] = (0, 0, 0)
+            colour = np.ceil(ndvi_val * 255)
+            redjpg[rr, cc] = (colour, 0, 0)
             # record
             entry = str(refid) + ',' \
                     + str(i + 1) + ',' \
