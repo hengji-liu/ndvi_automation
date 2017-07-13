@@ -34,13 +34,13 @@ import sys, struct
 # print(image[474][948])  # black
 # print(image[815][910])  # black
 
-# import osgeo.gdal as gdal
-#
-# dataset = gdal.Open(r'red.tif', gdal.GA_ReadOnly)
-# print(dataset.GetProjection())
+import osgeo.gdal as gdal
+
+dataset = gdal.Open(r'indicies\red.tif', gdal.GA_ReadOnly)
+print(dataset.GetProjection())
 # band = dataset.GetRasterBand(1)
 # scanline = band.ReadRaster(0, 948, band.XSize, 1, band.XSize, 1, gdal.GDT_Float32)
-# # Unpack the line of data to be read as floating point data
+# Unpack the line of data to be read as floating point data
 # t = struct.unpack('f' * band.XSize, scanline)
 # print(t)
 
